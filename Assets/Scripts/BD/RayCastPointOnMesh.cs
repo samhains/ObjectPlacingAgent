@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace BehaviorDesigner.Runtime.Tasks
 {
@@ -15,7 +16,7 @@ namespace BehaviorDesigner.Runtime.Tasks
         public override TaskStatus OnUpdate()
         {
             Vector3 fwd = transform.TransformDirection(Vector3.forward);
-            Vector3 pos = transform.position;
+            Vector3 pos = transform.position + new Vector3(0, 1, 0);
             RaycastHit hit;
 
             if (Physics.Raycast(pos, fwd, out hit, 1000))

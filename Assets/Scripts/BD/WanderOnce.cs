@@ -19,20 +19,20 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
         [Tooltip("The minimum length of time that the agent should pause at each destination")]
         public SharedInt targetRetries = 1;
         
-        public SharedBool hasSetDestinationOnce;
+        private bool hasSetDestinationOnce;
 
         public override void OnStart()
         {
             base.OnStart();
-            hasSetDestinationOnce.Value = false;
+            hasSetDestinationOnce = false;
         }
 
         public override TaskStatus OnUpdate()
         {
             if (HasArrived()) {
-                if (hasSetDestinationOnce.Value)
+                if (hasSetDestinationOnce)
                 {
-                    hasSetDestinationOnce.Value = false;
+                    hasSetDestinationOnce = false;
                     Stop();
                     return TaskStatus.Success;
                 }
@@ -55,7 +55,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
             }
             if (validDestination) {
                 SetDestination(destination);
-                hasSetDestinationOnce.Value = true;
+                hasSetDestinationOnce = true;
             }
             return validDestination;
         }
@@ -67,7 +67,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
             maxWanderDistance = 20;
             wanderRate = 2;
             targetRetries = 1;
-            hasSetDestinationOnce.Value = false;
+            hasSetDestinationOnce = false;
         }
     }
 }
