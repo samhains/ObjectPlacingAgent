@@ -11,11 +11,6 @@ namespace BehaviorDesigner.Runtime.Tasks
         public SharedVector3 TestPoint;
         public SharedFloat Radius;
         
-        public override void OnStart()
-        {
-            
-        }
-
         public override TaskStatus OnUpdate()
         {
             NavMeshHit hit;
