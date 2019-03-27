@@ -1,5 +1,6 @@
 using BehaviorDesigner.Runtime.Tasks.Unity.UnityNavMeshAgent;
 using UnityEngine;
+using UnityEngine.Experimental.PlayerLoop;
 
 namespace BehaviorDesigner.Runtime.Tasks.Movement
 {
@@ -18,18 +19,21 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
         [Tooltip("The minimum length of time that the agent should pause at each destination")]
         public SharedInt targetRetries = 1;
         
-        private bool hasSetDestinationOnce;
+        public SharedBool hasSetDestinationOnce;
 
         public override void OnStart()
         {
-            hasSetDestinationOnce = false;
+            base.OnStart();
+            hasSetDestinationOnce.Value = false;
         }
 
         public override TaskStatus OnUpdate()
         {
             if (HasArrived()) {
-                if (hasSetDestinationOnce)
+                if (hasSetDestinationOnce.Value)
                 {
+                    hasSetDestinationOnce.Value = false;
+                    Stop();
                     return TaskStatus.Success;
                 }
                 TrySetTarget();
@@ -51,7 +55,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
             }
             if (validDestination) {
                 SetDestination(destination);
-                hasSetDestinationOnce = true;
+                hasSetDestinationOnce.Value = true;
             }
             return validDestination;
         }
@@ -63,7 +67,7 @@ namespace BehaviorDesigner.Runtime.Tasks.Movement
             maxWanderDistance = 20;
             wanderRate = 2;
             targetRetries = 1;
-            hasSetDestinationOnce = false;
+            hasSetDestinationOnce.Value = false;
         }
     }
 }
